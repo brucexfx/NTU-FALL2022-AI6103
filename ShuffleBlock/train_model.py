@@ -33,6 +33,8 @@ if torch.cuda.is_available():
     DEVICE = "cuda"
 device = torch.device(DEVICE)
 
+global block_size
+global ch_frac
 block_size = 3
 ch_frac = 0.5
 
@@ -41,7 +43,8 @@ class ShuffleBlock(nn.Module):
         super().__init__()
 
     def forward(self,activation_map):
-        print("block size: ",block_size," ch frac: ",ch_frac)
+        global block_size
+        global ch_frac
         if ch_frac == 0:
             return activation_map
         _, C, H, W = activation_map.size()
@@ -139,7 +142,8 @@ def ResNet50():
 
 
 def main():
-
+    global block_size
+    global ch_frac
     transform_train = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
